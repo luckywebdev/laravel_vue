@@ -27,6 +27,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.11.2",
         "admin-lte": "^3.0",
+        "bootstrap-vue": "^2.4.0",
         "moment": "^2.24.0",
         "vform": "^1.0.1",
         "vue-progressbar": "^0.7.5",

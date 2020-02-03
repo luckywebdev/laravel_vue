@@ -27,7 +27,8 @@ Vue.use(VueRouter);
 
 // import Form from "./utilities/Form";
 // window.Form = Form;
-
+import BootstrapVue from 'bootstrap-vue' //Importing
+Vue.use(BootstrapVue) // Telling Vue to use this in whole application
 
 //Import Sweetalert2
 import Swal from 'sweetalert2'

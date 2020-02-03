@@ -188,13 +188,22 @@
                 this.form.post('api/department')
                     .then((data) => {
                         console.log(data);
-                    
-                        Fire.$emit('AfterCreatedUserLoadIt'); //custom events
+                        if(data.data.status !== null && data.data.status !== undefined && data.data.status == "failed"){
+                            Fire.$emit('AfterCreatedUserLoadIt'); //custom events
 
-                            Toast.fire({
-                            icon: 'success',
-                            title: 'Department created successfully'
+                                Toast.fire({
+                                icon: 'success',
+                                title: data.data.message
                             })
+                        }
+                        else{
+                            Fire.$emit('AfterCreatedUserLoadIt'); //custom events
+
+                                Toast.fire({
+                                icon: 'success',
+                                title: 'Department created successfully'
+                            })
+                        }
 
                             this.$Progress.finish()
 

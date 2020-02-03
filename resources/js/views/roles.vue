@@ -106,9 +106,9 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button v-show="editMode" type="submit" class="btn btn-primary">Update</button>
-                            <button v-show="!editMode" type="submit" class="btn btn-primary">Create</button>
+                            <b-button type="button" class="btn btn-danger" variant="danger" data-dismiss="modal">Close</b-button>
+                            <b-button v-show="editMode" type="submit" variant="primary" class="btn btn-primary">Update</b-button>
+                            <b-button v-show="!editMode" type="submit" variant="primary" class="btn btn-primary">Create</b-button>
                         </div>
 
                         </form>
