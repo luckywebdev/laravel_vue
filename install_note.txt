@@ -1,0 +1,19 @@
+1. download the project from git.
+2. create database named laravel_vue in your mysql server.
+3. go to the directory of the project.
+4. run the following command by cmd
+   >php artisan migrate
+5. install node module using the following command
+   >npm install
+6. install vue module
+   >npm run dev
+7. run the project
+   >php artisan serve
+8. register user at first clicking register button
+   You can go to admin dashboard page when registering user.
+9. you should set permission.
+10. set role.
+11. you can CRUD user with role and permission from now.
+12. You can also CRUD department.
+
+This wasn't completed truly yet but it will be completed soon if you give me some times. 

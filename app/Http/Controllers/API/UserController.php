@@ -56,9 +56,11 @@ class UserController extends Controller
             'password' => 'required',
         ]);
         $role = Role::where('slug', $request['role'])->first();
-        // $permission_row = $role->permissions()->first();
-        // $permission = Permission::where('slug', $permission_row->slug)->first();
+        $permission_row = $role->permissions()->first();
+        $permission = Permission::where('slug', $permission_row->slug)->first();
         $user = User::findOrFail($id);
+        $user_role = $user->role;
+
         $user->first_name = $request['first_name'];
         $user->last_name = $request['last_name'];
         $user->email = $request['email'];
@@ -69,8 +71,10 @@ class UserController extends Controller
         $user->role = $request['role'];
         $user->save();
         // $user->update($request->all());
-        $user->roles()->attach($role);        
-        // $user->permissions()->attach($permission);        
+        if($user_role != $request['role']){
+            $user->roles()->attach($role);        
+            $user->permissions()->attach($permission);        
+        }
 
     }
 
