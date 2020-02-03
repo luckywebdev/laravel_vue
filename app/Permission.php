@@ -26,4 +26,10 @@ class Permission extends Model
         return $this->belongsToMany(User::class,'users_permissions');
         
     }
+
+
+    function setNameAttribute($value) {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = str_slug($value);
+    }
 }

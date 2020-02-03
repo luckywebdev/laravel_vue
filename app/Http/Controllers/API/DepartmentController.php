@@ -26,7 +26,7 @@ class DepartmentController extends Controller
 
     public function store(Request $request)
     {   
-        if($request->user()->can('create')) {
+        if($request->user()->can('create & edit')) {
             $this->validate($request, [
                 'name' => 'required',
                 'description' => 'required',
@@ -52,6 +52,7 @@ class DepartmentController extends Controller
 
     public function update(Request $request, $id)
     {   
+        
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',

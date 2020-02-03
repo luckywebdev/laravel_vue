@@ -48,12 +48,6 @@
                         <p>Roles</p>
                     </router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link tag="a" to="/permissions" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Permissions</p>
-                    </router-link>
-                </li>
 
             </ul>
         </nav>

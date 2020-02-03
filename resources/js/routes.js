@@ -17,10 +17,6 @@ export const routes = [
     {
         path: '/roles',
         component: require('./views/roles').default
-    },
-    {
-        path: '/permissions',
-        component: require('./views/permissions').default
     }
 ];
 
