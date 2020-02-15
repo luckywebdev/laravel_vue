@@ -78,6 +78,14 @@ class UserController extends Controller
 
     }
 
+    public function update_department(Request $request, $id)
+    {   
+        $user = User::findOrFail($id);
+        $user->department = implode(",", $request['department']);
+        $user->save();
+
+    }
+
     public function destroy($id)
     {
         $user = User::findOrFail($id);

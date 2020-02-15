@@ -6,12 +6,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Permissions</h1>
+                        <h1 class="m-0 text-dark">User Department Assign</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Permissions</li>
+                            <li class="breadcrumb-item active">User Department Assign</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -29,10 +29,9 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Permissions Table</h3>
+                                <h3 class="card-title">User Department Assign Table</h3>
 
                                 <div class="card-tools">
-                                   <button class="btn btn-success" data-toggle="modal" data-target="#addNew" @click="openModalWindow">Add New <i class="fas fa-user-plus fa-fw"></i></button>
                                 </div>
                             </div>
                             <!-- /.card-header -->
@@ -42,22 +41,18 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Description</th>
+                                        <th>Department</th>
                                         <th>Modify</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="user in users" :key="user.id">
                                         <td>{{user.id}}</td>
-                                        <td>{{user.name}}</td>
-                                        <td>{{user.slug}}</td>
+                                        <td>{{user.first_name}} {{ user.last_name}}</td>
+                                        <td>{{user.department}}</td>
                                         <td>
                                             <a href="#" data-id="user.id" @click="editModalWindow(user)">
                                                 <i class="fa fa-edit blue"></i>
-                                            </a>
-                                            |
-                                            <a href="#" @click="deleteUser(user.id)">
-                                                <i class="fa fa-trash red"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -74,8 +69,7 @@
                         <div class="modal-content">
                         <div class="modal-header">
 
-                            <h5 v-show="!editMode" class="modal-title" id="addNewLabel">Add New Department</h5>
-                            <h5 v-show="editMode" class="modal-title" id="addNewLabel">Update Department</h5>
+                            <h5 v-show="editMode" class="modal-title" id="addNewLabel">Assign Department</h5>
 
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -85,23 +79,47 @@
                         <form @submit.prevent="editMode ? updateUser() : createUser()">
                         <div class="modal-body">
                             <div class="form-group">
-                                <input v-model="form.name" type="text" name="name"
+                                <label class="typo__label">Name</label>
+                                <input v-model="form.first_name" type="text" name="first_name"
                                     placeholder="Name"
-                                    class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-                                <has-error :form="form" field="name"></has-error>
+                                    class="form-control" :class="{ 'is-invalid': form.errors.has('first_name') }">
+                                <has-error :form="form" field="first_name"></has-error>
                             </div>
                             <div class="form-group">
-                                <input v-model="form.slug" type="text" name="slug"
-                                    placeholder="Description"
-                                    class="form-control" :class="{ 'is-invalid': form.errors.has('slug') }">
-                                <has-error :form="form" field="slug"></has-error>
+                                <b-form-group label="Department Select">
+                                    <!-- prop `add-on-change` is needed to enable adding tags vie the `change` event -->
+                                    <b-form-tags v-model="value" size="lg" add-on-change no-outer-focus class="mb-2">
+                                        <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
+                                        <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
+                                            <li v-for="tag in tags" :key="tag" class="list-inline-item">
+                                            <b-form-tag
+                                                @remove="removeTag(tag)"
+                                                :title="tag"
+                                                :disabled="disabled"
+                                                variant="info"
+                                            >{{ tag }}</b-form-tag>
+                                            </li>
+                                        </ul>
+                                        <b-form-select
+                                            v-bind="inputAttrs"
+                                            v-on="inputHandlers"
+                                            :disabled="disabled || availableOptions.length === 0"
+                                            :options="availableOptions">
+                                            <template v-slot:first>
+                                            <!-- This is required to prevent bugs with Safari -->
+                                            <option disabled value="">Choose a department...</option>
+                                            </template>
+                                        </b-form-select>
+                                        </template>
+                                    </b-form-tags>
+                                </b-form-group>
                             </div>
+                            <input type="hidden" name="department" v-model="value">
 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button v-show="editMode" type="submit" class="btn btn-primary">Update</button>
-                            <button v-show="!editMode" type="submit" class="btn btn-primary">Create</button>
+                            <button v-show="editMode" type="submit" class="btn btn-primary">Assign</button>
                         </div>
 
                         </form>
@@ -129,15 +147,22 @@
             return {
                 editMode: false,
                 users: {},
+                departments: {},
+                options: [],
+                value: [],
                 form: new Form({
                     'id': '',
-                    'name': '',
-                    'slug': ''
+                    'first_name': '',
+                    'department': ''
                 })
             }
 
         },
-
+        computed: {
+            availableOptions() {
+                return this.options.filter(opt => this.value.indexOf(opt) === -1)
+            }
+        },
 
         created() {
             this.loadUsers();
@@ -156,12 +181,12 @@
             this.form.fill(user)
             },
             updateUser(){
-            this.form.put('api/permissions/'+this.form.id)
+                this.form.department = this.value;
+                this.form.put('api/user_department/'+this.form.id)
                 .then((data)=>{
-                    console.log(data);
                     Toast.fire({
                         icon: 'success',
-                        title: 'Permission updated successfully'
+                        title: 'User assigned successfully'
                         })
 
                         Fire.$emit('AfterCreatedUserLoadIt');
@@ -179,69 +204,14 @@
             },
 
             loadUsers() {
-                axios.get("api/permissions").then( data => (this.users = data.data));
-
+                axios.get("api/user").then( data => (this.users = data.data));
+                axios.get("api/department").then( data => {
+                    this.departments = data.data;
+                    this.options = this.departments.map(function(val, index){
+                        return val.name;
+                    });
+                });
                 //pick data from controller and push it into users object
-            },
-            createUser(){
-                this.$Progress.start()
-                this.form.post('api/permissions')
-                    .then((data) => {
-                        console.log(data);
-                    
-                        Fire.$emit('AfterCreatedUserLoadIt'); //custom events
-
-                            Toast.fire({
-                            icon: 'success',
-                            title: 'Permission created successfully'
-                            })
-
-                            this.$Progress.finish()
-
-                            $('#addNew').modal('hide');
-
-                    })
-                    .catch(() => {
-                    console.log("Error......")
-                    })
-
-        
-
-                //this.loadUsers();
-            },   
-            deleteUser(id) {
-                Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    
-                if (result.value) {
-                    //Send Request to server
-                    this.form.delete('api/department/'+id)
-                        .then((response)=> {
-                                Swal.fire(
-                                'Deleted!',
-                                'Permission deleted successfully',
-                                'success'
-                                )
-                        this.loadUsers();
-
-                        }).catch(() => {
-                            Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                            footer: '<a href>Why do I have this issue?</a>'
-                            })
-                        })
-                    }
-
-                })
             }         
         }
     }

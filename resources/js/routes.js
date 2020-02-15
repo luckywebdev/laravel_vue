@@ -15,6 +15,10 @@ export const routes = [
         component: require('./views/departments').default
     },
     {
+        path: '/userdepartment',
+        component: require('./views/userdepartment').default
+    },
+    {
         path: '/roles',
         component: require('./views/roles').default
     }

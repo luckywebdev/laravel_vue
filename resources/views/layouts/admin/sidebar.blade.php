@@ -43,6 +43,12 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
+                    <router-link tag="a" to="/userdepartment" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>User Departments</p>
+                    </router-link>
+                </li>
+                <li class="nav-item">
                     <router-link tag="a" to="/roles" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>Roles</p>

@@ -43,6 +43,7 @@ Route::post('users', 'UserController@store');
 Route::get('api/user', 'API\UserController@index');
 Route::post('api/user', 'API\UserController@store');
 Route::put('api/user/{id}', 'API\UserController@update');
+Route::put('api/user_department/{id}', 'API\UserController@update_department');
 Route::delete('api/user/{id}', 'API\UserController@destroy');
 
 // Department CRUD
@@ -62,4 +63,3 @@ Route::post('api/roles', 'RoleController@store');
 Route::put('api/roles/{id}', 'RoleController@update');
 Route::delete('api/roles/{id}', 'RoleController@destroy');
 
-Route::get('/roles', 'PermissionController@Permission');
